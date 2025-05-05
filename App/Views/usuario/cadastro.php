@@ -15,7 +15,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" class="form-control" name="email" placeholder="" value="<?php echo $Sessao::retornaValorFormulario('email'); ?>" required>
+                    <input type="email" class="form-control" name="email" placeholder="Digite seu email" value="<?php echo $Sessao::retornaValorFormulario('email'); ?>" required>
                 </div>
 
                 <button type="submit" class="btn btn-success btn-sm">Salvar</button>

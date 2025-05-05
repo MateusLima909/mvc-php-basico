@@ -9,40 +9,34 @@ class Cliente
     private $telefone;
 
 
-    public function getid(){
+    public function getId(){
         return $this->id;
     }
-    public function setid($id){
+    public function setId($id){
         $this->id = $id;
     }
-    public function getnome(){
+    public function getNome(){
         return $this->nome;
     }
-    public function setnome($nome){
+    public function setNome($nome){
         $this->nome = $nome;
     }
-    public function getdtnasc(){
+    public function getDtnasc(){
         return $this->dtnasc;
     }
-    public function setdtnasc($dtnasc){
+    public function setDtnasc($dtnasc){
         $this->dtnasc = $dtnasc;
     }
-    public function getcpf(){
+    public function getCpf(){
         return $this->cpf;
     }
-    public function setcpf($cpf){
+    public function setCpf($cpf){
         $this->cpf = $cpf;
     }
-    public function gettelefone(){
+    public function getTelefone(){
         return $this->telefone;
     }
-    public function settelefone(){
+    public function setTelefone($telefone){
         $this->telefone = $telefone;
-    }
-    public function getfonecedor(){
-        return $this->fornecedor;
-    }
-    public function setfornecedor(){
-        $this->fornecedor = $fornecedor;
     }
 }

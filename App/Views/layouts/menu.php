@@ -17,6 +17,12 @@
                 <li <?php if($viewVar['nameController'] == "UsuarioController") { ?> class="active" <?php } ?>>
                     <a href="http://<?php echo APP_HOST; ?>/usuario/cadastro" >Cadastro de Usuário</a>
                 </li>
+                <li <?php if($viewVar['nameController'] == "FornecedorController") { ?> class="active" <?php } ?>>
+                    <a href="http://<?php echo APP_HOST; ?>/fornecedor/cadastro" >Cadastro de Fornecedor</a>
+                </li>
+                <li <?php if($viewVar['nameController'] == "ClienteController") { ?> class="active" <?php } ?>>
+                    <a href="http://<?php echo APP_HOST; ?>/cliente/cadastro" >Cadastro de Cliente</a>
+                </li>
             </ul>
         </div>
     </div>

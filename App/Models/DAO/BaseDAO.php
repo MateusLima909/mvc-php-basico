@@ -6,7 +6,7 @@ use App\Lib\Conexao;
 
 abstract class BaseDAO
 {
-    private $conexao;
+    protected $conexao;
 
     public function __construct()
     {
@@ -32,6 +32,38 @@ abstract class BaseDAO
             */
             $stmt = $this->conexao->prepare("INSERT INTO $table ($colunas) VALUES ($parametros)");
             $stmt->execute($values);
+
+            return $stmt->rowCount();
+        }else{
+            return false;
+        }
+    }
+
+    public function update($table, $cols, $values) 
+    {
+        if(!empty($table) && !empty($cols) && !empty($values))
+        {
+            if ($where) {
+                $where = "WHERE $where";
+           }
+            $stmt = $this->conexao->prepare("UPDATE $table SET $cols $where");
+            $stmt->execute($values);
+
+            return $stmt->rowCount();
+        }else{
+            return false;
+        }
+    }
+
+    public function delete($table, $where = null) 
+    {
+        if(!empty($table))
+        {
+            if ($where) {             
+                $where = "WHERE $where";
+           }
+            $stmt = $this->conexao->prepare("DELETE FROM $table $where");
+            $stmt->execute();
 
             return $stmt->rowCount();
         }else{

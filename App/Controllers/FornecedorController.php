@@ -18,8 +18,7 @@ class FornecedorController extends Controller
 
     public function salvar()
     {
-        $Fornecedor = new Cliente();
-        $Fornecedor->setId($_POST['id']);
+        $Fornecedor = new Fornecedor();
         $Fornecedor->setNome($_POST['nome']);
         $Fornecedor->setNomeFantasia($_POST['nomeFantasia']);
         $Fornecedor->setCnpj($_POST['cnpj']);
@@ -32,8 +31,8 @@ class FornecedorController extends Controller
 
         $fornecedorDAO = new FornecedorDAO();
 
-        if($fornecedorDAO->verificaTelefone($_POST['telefone'])){
-            Sessao::gravaMensagem("Telefone existente");
+        if($fornecedorDAO->verificaCnpj($_POST['cnpj'])){
+            Sessao::gravaMensagem("CNPJ existente");
             $this->redirect('/fornecedor/cadastro');
         }
 

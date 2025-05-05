@@ -1,7 +1,8 @@
 <?php
 namespace App\Models\Entidades;
-class Fornecedor
-{
+
+class Fornecedor {
+    
     private $id;
     private $nome;
     private $nomeFantasia;
@@ -11,52 +12,52 @@ class Fornecedor
     private $tipoDeServico;
     private $telefone;
 
-    public function getid(){
+    public function getId(){
         return $this->id;
     }
-    public function setid($id){
+    public function setId($id){
         $this->id =$id;
     }
-    public function getnome(){
+    public function getNome(){
         return $this->nome;
     }
-    public function setnome($nome){
+    public function setNome($nome){
         $this->nome = $nome;
     }
-    public function getnomeFantasia(){
+    public function getNomeFantasia(){
         return $this->nomeFantasia;
     }
-    public function setnomeFantasia($nomeFantasia){
+    public function setNomeFantasia($nomeFantasia){
         $this->nomeFantasia = $nomeFantasia;
     }
-    public function getcnpj(){
+    public function getCnpj(){
         return $this->cnpj;
     }
-    public function setcnpj($cnpj){
+    public function setCnpj($cnpj){
         $this->cnpj = $cnpj;
     }
-    public function getinscricaoEstadual(){
+    public function getInscricaoEstadual(){
         return $this->inscricaoEstadual;
     }
-    public function setinscricaoEstadual($inscricaoEstadual){
+    public function setInscricaoEstadual($inscricaoEstadual){
         $this->inscricaoEstadual =$inscricaoEstadual;
     }
-    public function getendereco(){
+    public function getEndereco(){
         return $this->endereco;
     }
-    public function setendereco($endereco){
+    public function setEndereco($endereco){
         $this->endereco = $endereco;
     }
-    public function gettipoDeServico(){
+    public function getTipoDeServico(){
         return $this->tipoDeServico;
     }
-    public function settipoDeServico($tipoDeServico){
+    public function setTipoDeServico($tipoDeServico){
         $this->tipoDeServico = $tipoDeServico;
     }
-    public function gettelefone(){
+    public function getTelefone(){
         return $this->telefone;
     }
-    public function settelefone($telefone){
+    public function setTelefone($telefone){
         $this->telefone = $telefone;
     }
 }

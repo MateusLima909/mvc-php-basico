@@ -19,7 +19,6 @@ class ClienteController extends Controller
     public function salvar()
     {
         $Cliente = new Cliente();
-        $Cliente->setId($_POST['id']);
         $Cliente->setNome($_POST['nome']);
         $Cliente->setDtnasc($_POST['dtnasc']);
         $Cliente->setCpf($_POST['cpf']);
@@ -29,8 +28,8 @@ class ClienteController extends Controller
 
         $clienteDAO = new ClienteDAO();
 
-        if($clienteDAO->verificaTelefone($_POST['telefone'])){
-            Sessao::gravaMensagem("telefone existente");
+        if($clienteDAO->verificaCpf($_POST['cpf'])){
+            Sessao::gravaMensagem("CPF existente");
             $this->redirect('/cliente/cadastro');
         }
 

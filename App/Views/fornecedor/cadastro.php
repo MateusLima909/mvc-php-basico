@@ -1,4 +1,4 @@
-<div class="container>
+<div class="container">
      <div class= "d-flex justify-content-between flex-wrap 
      flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
          <div class="starter-template">
@@ -22,57 +22,46 @@
                 <div class="alert alert-warning" role= 
                     "alert"> <?php echo $Sessao::retornaMensagem(); ?></div>
                 <?php } ?>
-                <form action="http://<?php echo APP_HOST; ?>/fornecedor/salvar" metodh="post" id="form_cadastro">
+                <form action="http://<?php echo APP_HOST; ?>/fornecedor/salvar" method="post" id="form_cadastro">
                 <div class="form-group">
                 <label for="nome">NOME</label>
                 <INput type="text" class="form-control" name="nome" 
-                placeholder="Seu nome" values="<?php echo $Sessao:: 
+                placeholder="Digite seu nome" values="<?php echo $Sessao:: 
                 retornaValorFormulario('nome');?>" required> </div>
                 <div class="form-group">
-                <label for="nome">NOMEFANTASIA</label>
-                <INput type="text" class="form-control" name="nomefantasia" 
-                placeholder="Seu nome fantasia" values="<?php echo $Sessao:: 
-                retornaValorFormulario('nomefantasia');?>" required> </div>
+                <label for="nome">NOME FANTASIA</label>
+                <INput type="text" class="form-control" name="nomeFantasia" 
+                placeholder="Digite o nome fantasia" values="<?php echo $Sessao:: 
+                retornaValorFormulario('nomeFantasia');?>" required> </div>
                <div class="form-group">
                <label for="cnpj">CNPJ</label>
                <input type="text" class="form-control" name="cnpj" 
-                placeholder="Seu CNPJ" value="<?php echo $Sessao::retornaValorFormulario('cnpj');?>" required>
+                placeholder="Digite seu CNPJ" value="<?php echo $Sessao::retornaValorFormulario('cnpj');?>" required>
                 </div>
                 <div class="form-group">
-               <label for="inscricaoEstadual">inscricaoEstadual</label>
+               <label for="inscricaoEstadual">INSCRIÇÃO ESTADUAL</label>
                <input type="text" class="form-control" name="inscricaoEstadual" 
-                placeholder="Sua inscricaoEstadual" value="<?php echo $Sessao::retornaValorFormulario('inscricaoEstadual');?>" required>
+                placeholder="Digite sua inscrição estadual" value="<?php echo $Sessao::retornaValorFormulario('inscricaoEstadual');?>" required>
                 </div>
                 <div class="form-group">
-               <label for="endereco">ENDERECO</label>
+               <label for="endereco">ENDEREÇO</label>
                <input type="text" class="form-control" name="endereco" 
-                placeholder="Seu ENDERECO" value="<?php echo $Sessao::retornaValorFormulario('ENDERECO');?>" required>
+                placeholder="Digite seu endereço" value="<?php echo $Sessao::retornaValorFormulario('endereco');?>" required>
                 </div>
                 <div class="form-group">
-               <label for="tipoDeServico">TIPODESERVICO</label>
+               <label for="tipoDeServico">TIPO DE SERVIÇO</label>
                <input type="text" class="form-control" name="tipoDeServico" 
-                placeholder="Seu tipoDeServico" value="<?php echo $Sessao::retornaValorFormulario('tipoDeServico');?>" required>
+                placeholder="Digite o tipo de serviço" value="<?php echo $Sessao::retornaValorFormulario('tipoDeServico');?>" required>
                 </div> 
                 <div class="form-group">
                <label for="telefone">TELEFONE</label>
                <input type="text" class="form-control" name="telefone" 
-                placeholder="Seu telefone" value="<?php echo $Sessao::retornaValorFormulario('telefone');?>" required>
+                placeholder="Digite seu telefone" value="<?php echo $Sessao::retornaValorFormulario('telefone');?>" required>
                 </div>
-
-
-
-
-
-                <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" class=" form-control" name="email" 
-                placeholder="" value="<?php echo $Sessao::
-                retornaValorFormulario ('email'); ?>" required>
+                <button type="submit" class="btn btn-success btn-sm">Salvar</button> 
+            </div>
+            </form>
+        </div>
+        <div class="col-md-3"></div>
     </div>
-         <button type="submit" class="btn btn-success btn-sm">Salvar</button> 
-         </INput>
-            </div></form>
-                </div>
-                <div class="col-md-3"></div>
-
-            </div> </div>
+</div>

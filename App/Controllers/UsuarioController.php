@@ -55,4 +55,59 @@ class UsuarioController extends Controller
         $this->redirect('/usuario/cadastro');
     }
 
+    
+    public function listar()
+    {
+        $usuarioDAO = new UsuarioDAO();
+        $usuarios = $usuarioDAO -> listar();
+
+        $this->setViewParam('usuarios', $usuarios);
+        $this->render('/usuario/listar');
+    }
+
+    public function editar($id)
+    {
+        $usuarioDAO = new UsuarioDAO();
+        $usuario = $usuarioDAO->buscar($id);
+    
+        if ($usuario) {
+            $this->setViewParam('usuario', $usuario);
+            $this->render('/usuario/editar');
+        } else {
+            Sessao::gravaMensagem("Usuário não encontrado.");
+            $this->redirect('/usuario/listar');
+        }
+    }
+
+    public function excluir($id)
+    {
+        $usuarioDAO = new UsuarioDAO();
+
+        if ($usuarioDAO->excluir($id)) {
+            Sessao::gravaMensagem("Usuário excluído com sucesso");
+        } else {
+            Sessao::gravaMensagem("Erro ao excluir usuário");
+        }
+
+        $this->redirect('/usuario/cadastro');
+    }
+
+    public function atualizar()
+{
+    $usuario = new Usuario();
+    $usuario->setId($_POST['id']);
+    $usuario->setNome($_POST['nome']);
+    $usuario->setEmail($_POST['email']);
+
+    $usuarioDAO = new UsuarioDAO();
+
+    if ($usuarioDAO->atualizar($usuario)) {
+        Sessao::gravaMensagem("Usuário atualizado com sucesso!");
+        $this->redirect('/usuario/listar');
+    } else {
+        Sessao::gravaMensagem("Erro ao atualizar usuário.");
+        $this->redirect('/usuario/editar/' . $_POST['id']);
+    }
+}
+
 }

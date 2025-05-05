@@ -16,14 +16,18 @@ abstract class Controller
 
     public function render($view)
     {
-        $viewVar = $this->getViewVar();
-        $Sessao  = Sessao::class;
+    $viewVar = $this->getViewVar();
+    $Sessao  = Sessao::class;
 
-        require_once PATH . '/App/Views/layouts/header.php';
-        require_once PATH . '/App/Views/layouts/menu.php';
-        require_once PATH . '/App/Views/' . $view . '.php';
-        require_once PATH . '/App/Views/layouts/footer.php';
+    if (is_array($viewVar)) {
+        extract($viewVar);
     }
+
+    require_once PATH . '/App/Views/layouts/header.php';
+    require_once PATH . '/App/Views/layouts/menu.php';
+    require_once PATH . '/App/Views/' . $view . '.php';
+    require_once PATH . '/App/Views/layouts/footer.php';
+}
 
     public function redirect($view)
     {
