@@ -57,4 +57,59 @@ class ClienteController extends Controller
         $this->redirect('/cliente/cadastro');
     }
 
+    public function listar()
+    {
+        $clienteDAO = new ClienteDAO();
+        $cliente = $clienteDAO -> listar();
+
+        $this->setViewParam('cliente', $cliente);
+        $this->render('/cliente/listar');
+    }
+
+    public function editar($id)
+    {
+        $clienteDAO = new ClienteDAO();
+        $cliente = $clienteDAO->buscar($id);
+    
+        if ($cliente) {
+            $this->setViewParam('cliente', $cliente);
+            $this->render('/cliente/editar');
+        } else {
+            Sessao::gravaMensagem("Cliente não encontrado.");
+            $this->redirect('/cliente/listar');
+        }
+    }
+
+    public function excluir($id)
+    {
+        $clienteDAO = new ClienteDAO();
+
+        if ($clienteDAO->excluir($id)) {
+            Sessao::gravaMensagem("Usuário excluído com sucesso");
+        } else {
+            Sessao::gravaMensagem("Erro ao excluir usuário");
+        }
+        $this->redirect('/cliente/listar');
+    }
+
+    public function atualizar()
+    {
+    $cliente = new Cliente();
+    $cliente->setId($_POST['id']);
+    $cliente->setNome($_POST['nome']);
+    $cliente->setDtnasc($_POST['dtnasc']);
+    $cliente->setCpf($_POST['cpf']);
+    $cliente->setTelefone($_POST['telefone']);
+
+    $clienteDAO = new ClienteDAO();
+
+    if ($clienteDAO->atualizar($cliente)) {
+        Sessao::gravaMensagem("Cliente atualizado com sucesso!");
+    } else {
+        Sessao::gravaMensagem("Erro ao atualizar cliente.");
+        $this->redirect('/cliente/editar/' . $_POST['id']);
+    }
+    $this->redirect('/cliente/listar');
+}
+
 }

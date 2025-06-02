@@ -60,4 +60,63 @@ class FornecedorController extends Controller
         $this->redirect('/fornecedor/cadastro');
     }
 
+    public function listar()
+    {
+        $fornecedorDAO = new FornecedorDAO();
+        $fornecedor = $fornecedorDAO -> listar();
+
+        $this->setViewParam('fornecedor', $fornecedor);
+        $this->render('/fornecedor/listar');
+    }
+
+    public function editar($id)
+    {
+        $fornecedorDAO = new FornecedorDAO();
+        $fornecedor = $fornecedorDAO->buscar($id);
+    
+        if ($fornecedor) {
+            $this->setViewParam('fornecedor', $fornecedor);
+            $this->render('/fornecedor/editar');
+        } else {
+            Sessao::gravaMensagem("Fornecedor não encontrado.");
+            $this->redirect('/fornecedor/listar');
+        }
+    }
+
+    public function excluir($id)
+    {
+        $fornecedorDAO = new FornecedorDAO();
+
+        if ($fornecedorDAO->excluir($id)) {
+            Sessao::gravaMensagem("Fornecedor excluído com sucesso");
+        } else {
+            Sessao::gravaMensagem("Erro ao excluir fornecedor");
+        }
+        $this->redirect('/fornecedor/listar');
+    }
+
+    public function atualizar()
+    {
+        $fornecedor = new Fornecedor();
+        $fornecedor->setId($_POST['id']);
+        $fornecedor->setNome($_POST['nome']);
+        $fornecedor->setNomeFantasia($_POST['nomeFantasia']);
+        $fornecedor->setCnpj($_POST['cnpj']);
+        $fornecedor->setInscricaoEstadual($_POST['inscricaoEstadual']);
+        $fornecedor->setEndereco($_POST['endereco']);
+        $fornecedor->setTipoDeServico($_POST['tipoDeServico']);
+        $fornecedor->setTelefone($_POST['telefone']);
+    
+        $fornecedorDAO = new FornecedorDAO();
+    
+        if ($fornecedorDAO->atualizar($fornecedor)) {
+            Sessao::gravaMensagem("Fornecedor atualizado com sucesso!");
+        } else {
+            Sessao::gravaMensagem("Erro ao atualizar fornecedor.");
+            $this->redirect('/fornecedor/editar/' . $_POST['id']);
+            return;
+        }
+    
+        $this->redirect('/fornecedor/listar');
+    }
 }

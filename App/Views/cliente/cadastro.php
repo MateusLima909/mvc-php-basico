@@ -27,6 +27,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                <a href="http://<?php echo APP_HOST; ?>/cliente/listar" class="btn btn-info">Listar cliente</a>
             </form>
         </div>
         <div class=" col-md-3"></div>

@@ -40,7 +40,7 @@ class App
         }
 
         $this->controllerFile   = $this->controllerName . '.php';
-        $this->action           = preg_replace('/[^a-zA-Z]/i', '', $this->action);
+        $this->action = preg_replace('/[^a-zA-Z]/i', '', (string) $this->action);
 
         if (!$this->controller) {
             $this->controller = new HomeController($this);

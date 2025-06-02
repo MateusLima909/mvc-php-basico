@@ -59,6 +59,7 @@
                 placeholder="Digite seu telefone" value="<?php echo $Sessao::retornaValorFormulario('telefone');?>" required>
                 </div>
                 <button type="submit" class="btn btn-success btn-sm">Salvar</button> 
+                <a href="http://<?php echo APP_HOST; ?>/fornecedor/listar" class="btn btn-info">Listar Fornecedor</a>
             </div>
             </form>
         </div>

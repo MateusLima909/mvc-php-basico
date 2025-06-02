@@ -1,6 +1,6 @@
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">LISTA DE USUÁRIOS</h1>
+        <h1 class="h2">LISTA DE CLIENTE</h1>
 
         <?php if($Sessao::retornaMensagem()){ ?>
                 <div class="alert alert-success" role="alert"><?php echo $Sessao::retornaMensagem(); ?></div>
@@ -15,29 +15,32 @@
 
     <div class="container">
         <button class="btn btn-nv right">
-            <a href="http://<?php echo APP_HOST; ?>/usuario/cadastro">CRIAR NOVO<i class="fa-regular fa-square-plus"></i></a>
+            <a href="http://<?php echo APP_HOST; ?>/cliente/cadastro">CRIAR NOVO<i class="fa-regular fa-square-plus"></i></a>
         </button>
 
         <div class="panel-body">
-            <table class="table usuario" id="printTable">
+            <table class="table cliente" id="printTable">
                 <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
                         <th>NOME</th>
-                        <th>EMAIL</th>
-                        <th>AÇÕES</th>
+                        <th>DTNASC</th>
+                        <th>CPF</th>
+                        <th>TELEFONE</th>
                     </tr>
                 </thead>
                 <tbody>
-    <?php foreach ($viewVar['usuarios'] as $usuario) { ?>
+    <?php foreach ($viewVar['cliente'] as $cliente) { ?>
         <tr>
-            <td><?php echo $usuario->getId(); ?></td>
-            <td><?php echo $usuario->getNome(); ?></td>
-            <td><?php echo $usuario->getEmail(); ?></td>
+            <td><?php echo $cliente->getId(); ?></td>
+            <td><?php echo $cliente->getNome(); ?></td>
+            <td><?php echo $cliente->getDtnasc(); ?></td>
+            <td><?php echo $cliente->getCpf(); ?></td>
+            <td><?php echo $cliente->getTelefone(); ?></td>
            
             <td align="right" class="acao">
-                <a title="editar" href="http://<?php echo APP_HOST; ?>/usuario/editar/<?php echo $usuario->getId(); ?>" class="btn btn-edit edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                <a title="excluir" href="http://<?php echo APP_HOST; ?>/usuario/excluir/<?php echo $usuario->getId(); ?>" class="btn btn-delarquivo"><i class="fa-solid fa-trash-arrow-up"></i></a>
+                <a title="editar" href="http://<?php echo APP_HOST; ?>/cliente/editar/<?php echo $cliente->getId(); ?>" class="btn btn-edit edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a title="excluir" href="http://<?php echo APP_HOST; ?>/cliente/excluir/<?php echo $cliente->getId(); ?>" class="btn btn-delarquivo"><i class="fa-solid fa-trash-arrow-up"></i></a>
             </td>
         </tr>
     <?php } ?>

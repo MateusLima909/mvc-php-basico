@@ -17,8 +17,13 @@
                     <label for="email">E-mail</label>
                     <input type="email" class="form-control" name="email" placeholder="Digite seu email" value="<?php echo $Sessao::retornaValorFormulario('email'); ?>" required>
                 </div>
+                <div class="form-group">
+                    <label for="email">Senha</label>
+                    <input type="password" class="form-control" name="senha" placeholder="Digite uma senha" value="<?php echo $Sessao::retornaValorFormulario('senha'); ?>" required>
+                </div>
 
                 <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                <a href="http://<?php echo APP_HOST; ?>/usuario/listar" class="btn btn-info">Listar usuario</a>
             </form>
         </div>
         <div class=" col-md-3"></div>

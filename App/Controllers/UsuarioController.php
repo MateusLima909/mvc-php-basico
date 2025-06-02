@@ -8,6 +8,7 @@ use App\Models\Entidades\Usuario;
 
 class UsuarioController extends Controller
 {
+    
     public function cadastro()
     {
         $this->render('/usuario/cadastro');
@@ -21,6 +22,8 @@ class UsuarioController extends Controller
         $Usuario = new Usuario();
         $Usuario->setNome($_POST['nome']);
         $Usuario->setEmail($_POST['email']);
+        $Usuario->setSenha(password_hash($_POST['senha'], PASSWORD_DEFAULT));
+        $Usuario->setNivelAcesso('usuario');
 
         Sessao::gravaFormulario($_POST);
 
@@ -88,12 +91,11 @@ class UsuarioController extends Controller
         } else {
             Sessao::gravaMensagem("Erro ao excluir usuário");
         }
-
-        $this->redirect('/usuario/cadastro');
+        $this->redirect('/usuario/listar');
     }
 
     public function atualizar()
-{
+    {
     $usuario = new Usuario();
     $usuario->setId($_POST['id']);
     $usuario->setNome($_POST['nome']);
@@ -103,11 +105,10 @@ class UsuarioController extends Controller
 
     if ($usuarioDAO->atualizar($usuario)) {
         Sessao::gravaMensagem("Usuário atualizado com sucesso!");
-        $this->redirect('/usuario/listar');
     } else {
         Sessao::gravaMensagem("Erro ao atualizar usuário.");
         $this->redirect('/usuario/editar/' . $_POST['id']);
     }
+    $this->redirect('/usuario/listar');
 }
-
 }
