@@ -23,7 +23,7 @@ class LoginController extends Controller
     public function index()
     {
         if (isset($_SESSION['usuario_id'])) {
-            $this->redirect('/usuario/cadastro'); // REDIRECIONAMENTO TEMPORÁRIO PARA TESTE
+            $this->redirect('/home'); // REDIRECIONAMENTO TEMPORÁRIO PARA TESTE
         }
         $this->render('login/index'); 
     }
@@ -31,7 +31,7 @@ class LoginController extends Controller
     public function autenticar()
     {
         if (isset($_SESSION['usuario_id'])) {
-            $this->redirect('/usuario/cadastro'); // REDIRECIONAMENTO TEMPORÁRIO PARA TESTE
+            $this->redirect('/home'); // REDIRECIONAMENTO TEMPORÁRIO PARA TESTE
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -57,7 +57,7 @@ class LoginController extends Controller
                 Sessao::limpaMensagem();
                 Sessao::limpaFormulario();
 
-                $this->redirect('/usuario/cadastro'); // REDIRECIONAMENTO TEMPORÁRIO PARA TESTE
+                $this->redirect('/home/index'); 
 
             } else {
                 Sessao::gravaMensagem("E-mail ou senha inválidos.");
