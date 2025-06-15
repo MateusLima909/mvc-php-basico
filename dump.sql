@@ -29,3 +29,21 @@ CREATE TABLE cliente
 ALTER TABLE usuario 
 ADD senha VARCHAR(255) NOT NULL, 
 ADD nivel_acesso VARCHAR(20) NOT NULL DEFAULT 'usuario';
+
+ALTER TABLE `cliente`
+ADD COLUMN `id_usuario` INT NULL DEFAULT NULL AFTER `telefone`,
+ADD UNIQUE INDEX `id_usuario_UNIQUE` (`id_usuario` ASC),
+ADD CONSTRAINT `fk_cliente_usuario`
+  FOREIGN KEY (`id_usuario`)
+  REFERENCES `mvc_php_basico`.`usuario` (`id`)
+  ON DELETE SET NULL
+  ON UPDATE CASCADE;
+
+ALTER TABLE `fornecedor`
+ADD COLUMN `id_usuario` INT NULL DEFAULT NULL AFTER `telefone`,
+ADD UNIQUE INDEX `id_usuario_UNIQUE` (`id_usuario` ASC),
+ADD CONSTRAINT `fk_fornecedor_usuario`
+  FOREIGN KEY (`id_usuario`)
+  REFERENCES `mvc_php_basico`.`usuario` (`id`)
+  ON DELETE SET NULL
+  ON UPDATE CASCADE;

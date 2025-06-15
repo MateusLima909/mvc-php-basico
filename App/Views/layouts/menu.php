@@ -21,33 +21,43 @@ if (session_status() == PHP_SESSION_NONE) {
                     <a href="http://<?php echo APP_HOST; ?>" >Home</a>
                 </li>
                 
-                <?php if (isset($_SESSION['usuario_id'])): // Só mostra se estiver logado ?>
-                    <!-- Exemplo para um futuro link de Listar Usuários (se existir e for para UsuarioController->listar) -->
-                    <!-- 
-                    <li <?php if($viewVar['nameController'] == "UsuarioController" && ($this->app->getAction() ?? '') === 'listar') { ?> class="active" <?php } ?>>
-                        <a href="http://<?php echo APP_HOST; ?>/usuario/listar" >Listar Usuários</a>
-                    </li> 
-                    -->
-                    <li <?php if($viewVar['nameController'] == "FornecedorController") { ?> class="active" <?php } ?>>
-                        <a href="http://<?php echo APP_HOST; ?>/fornecedor/cadastro" >Cadastro de Fornecedor</a>
-                    </li>
-                    <li <?php if($viewVar['nameController'] == "ClienteController") { ?> class="active" <?php } ?>>
-                        <a href="http://<?php echo APP_HOST; ?>/cliente/cadastro" >Cadastro de Cliente</a>
-                    </li>
-                <?php endif; // Fim do if para usuário logado ?>
+                <?php if (isset($_SESSION['usuario_id'])): // Menu para UTILIZADORES LOGADOS ?>
+                    
+                    <?php if ($_SESSION['usuario_nivel'] === 'admin'): // Links específicos para Admin ?>
+                        <li <?php if($viewVar['nameController'] == "UsuarioController") { ?> class="active" <?php } ?>>
+                            <a href="http://<?php echo APP_HOST; ?>/usuario/listarGeral">Gerir Utilizadores</a>
+                        </li>
+                        <li <?php if($viewVar['nameController'] == "ClienteController") { ?> class="active" <?php } ?>>
+                            <a href="http://<?php echo APP_HOST; ?>/cliente/listar">Listar Clientes</a>
+                        </li>
+                         <li <?php if($viewVar['nameController'] == "FornecedorController") { ?> class="active" <?php } ?>>
+                            <a href="http://<?php echo APP_HOST; ?>/fornecedor/listar">Listar Fornecedores</a>
+                        </li>
+                    <?php endif; ?>
 
-                <?php if (!isset($_SESSION['usuario_id'])): // Só mostra se NÃO estiver logado ?>
-                    <li <?php if($viewVar['nameController'] == "UsuarioController" && ($this->app->getAction() ?? '') === 'cadastro') { ?> class="active" <?php } ?>>
-                        <a href="http://<?php echo APP_HOST; ?>/usuario/cadastro" >Cadastro de Usuário</a>
-                    </li>
-                    <li <?php if($viewVar['nameController'] == "LoginController" && ($this->app->getAction() ?? '') === 'index') { ?> class="active" <?php } ?>>
+                    <?php if ($_SESSION['usuario_nivel'] === 'cliente'): // Links específicos para Cliente ?>
+                        <li <?php if(($this->app->getAction() ?? '') === 'perfil') { ?> class="active" <?php } ?>>
+                            <a href="http://<?php echo APP_HOST; ?>/cliente/perfil">Meu Perfil</a>
+                        </li>
+                    <?php endif; ?>
+
+                     <?php if ($_SESSION['usuario_nivel'] === 'fornecedor'): // Links específicos para Fornecedor ?>
+                        <li <?php if(($this->app->getAction() ?? '') === 'meuPainel') { ?> class="active" <?php } ?>>
+                            <a href="http://<?php echo APP_HOST; ?>/fornecedor/meuPainel">Meu Painel</a>
+                        </li>
+                    <?php endif; ?>
+
+                <?php endif; // Fim do menu para utilizadores logados ?>
+
+                <?php if (!isset($_SESSION['usuario_id'])): // Menu para VISITANTES (NÃO LOGADOS) ?>
+                    <li <?php if($viewVar['nameController'] == "LoginController") { ?> class="active" <?php } ?>>
                         <a href="http://<?php echo APP_HOST; ?>/login" >Login</a>
                     </li>
-                <?php else: // Está logado, mostra link de Logout ?>
+                <?php else: // Link de Logout para utilizadores logados ?>
                     <li>
-                        <a href="http://<?php echo APP_HOST; ?>/login/logout">Sair (<?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Usuário') ?>)</a>
+                        <a href="http://<?php echo APP_HOST; ?>/login/logout">Sair (<?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Utilizador') ?>)</a>
                     </li>
-                <?php endif; // Fim do if/else para login/logout ?>
+                <?php endif; ?>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

@@ -62,6 +62,17 @@ class FornecedorController extends Controller
 
     public function listar()
     {
+
+        if (!isset($_SESSION['usuario_id'])) {
+            Sessao::gravaMensagem("Você precisa estar logado para ver a lista de fornecedores.");
+            $this->redirect('/login');
+        }
+
+        if ($_SESSION['usuario_nivel'] !== 'admin') {
+             Sessao::gravaMensagem("Você não tem permissão para acessar esta página.");
+             $this->redirect('/home'); 
+        }
+
         $fornecedorDAO = new FornecedorDAO();
         $fornecedor = $fornecedorDAO -> listar();
 

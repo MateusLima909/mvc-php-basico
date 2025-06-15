@@ -24,7 +24,7 @@
                     <tr>
                         <th>ID</th>
                         <th>NOME</th>
-                        <th>DTNASC</th>
+                        <th>DATA DE NASCIMENTO</th>
                         <th>CPF</th>
                         <th>TELEFONE</th>
                     </tr>

@@ -23,25 +23,27 @@ abstract class BaseDAO
         return false; 
     }
 
-    public function insert($table, array $dataToInsert) 
+    public function insert($table, array $dataToInsert)
     {
         if (empty($table) || empty($dataToInsert)) {
-            return false;
+            throw new \InvalidArgumentException("Tabela ou dados para inserção não podem ser vazios.");
         }
 
         $columns = implode(', ', array_keys($dataToInsert));
-        // Cria placeholders como :coluna1, :coluna2 (ex: :nome, :email)
         $placeholders = ':' . implode(', :', array_keys($dataToInsert));
 
         $sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
 
         try {
-         $stmt = $this->conexao->prepare($sql);
-         $stmt->execute($dataToInsert); // PDO mapeia as chaves do array para os placeholders
-         return $stmt->rowCount();
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->execute($dataToInsert);
+            
+            // CORREÇÃO CRÍTICA: Retornar o ID do último registro inserido
+            return $this->conexao->lastInsertId();
+
         } catch (\PDOException $e) {
-            // error_log("Erro no insert: " . $e->getMessage());
-            throw $e;
+            error_log("Erro em BaseDAO->insert: " . $e->getMessage() . " SQL: " . $sql . " Data: " . json_encode($dataToInsert));
+            throw new \Exception("Erro ao inserir dados no banco de dados.", 500, $e);
         }
     }
 

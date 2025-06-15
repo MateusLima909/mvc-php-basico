@@ -1,35 +1,68 @@
+<?php
+    // O header.php e menu.php (com a navbar) já são incluídos 
+    // pelo método render() do seu Controller base ANTES desta view.
+?>
+
 <div class="container">
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <h3>Cadastro de Cliente</h3>
+            <h3>Cadastro de Novo Cliente</h3>
+            <p>Preencha seus dados e crie sua conta de acesso ao sistema.</p>
+            <hr>
 
-            <?php if($Sessao::retornaMensagem()){ ?>
-                <div class="alert alert-warning" role="alert"><?php echo $Sessao::retornaMensagem(); ?></div>
-            <?php } ?>
+            <?php
+                // Lógica de mensagem corrigida: Verifica, mostra e limpa.
+                if (App\Lib\Sessao::existeMensagem()) {
+                    echo '<div class="alert alert-warning" role="alert">' . App\Lib\Sessao::retornaMensagem() . '</div>';
+                    App\Lib\Sessao::limpaMensagem();
+                }
+            ?>
 
             <form action="http://<?php echo APP_HOST; ?>/cliente/salvar" method="post" id="form_cadastro">
+                
+                <h4>Dados Pessoais</h4>
                 <div class="form-group">
-                    <label for="nome">Nome</label>
-                    <input type="text" class="form-control"  name="nome" placeholder="Digite seu nome" value="<?php echo $Sessao::retornaValorFormulario('nome'); ?>" required>
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" class="form-control" name="nome" placeholder="Digite seu nome completo" value="<?php echo App\Lib\Sessao::retornaValorFormulario('nome'); ?>" required>
                 </div>
                 <div class="form-group">
-                    <label for="telefone">Telefone</label>
-                    <input type="text" class="form-control" name="telefone" placeholder="Digite seu número de telefone" value="<?php echo $Sessao::retornaValorFormulario('telefone'); ?>" required>
-                </div>
-                <div class="form-group">
-                    <label for="date">Data de Nascimento</label>
-                    <input type="date" class="form-control" name="dtnasc" placeholder="Digite sua data de nascimento" value="<?php echo $Sessao::retornaValorFormulario('dtnasc'); ?>" required>
+                    <label for="dtnasc">Data de Nascimento</label>
+                    <input type="date" class="form-control" name="dtnasc" value="<?php echo App\Lib\Sessao::retornaValorFormulario('dtnasc'); ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="cpf">CPF</label>
-                    <input type="text" class="form-control" name="cpf" placeholder="Digite seu cpf" value="<?php echo $Sessao::retornaValorFormulario('cpf'); ?>" required>
+                    <input type="text" class="form-control" name="cpf" placeholder="Digite seu CPF" value="<?php echo App\Lib\Sessao::retornaValorFormulario('cpf'); ?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input type="text" class="form-control" name="telefone" placeholder="Digite seu número de telefone" value="<?php echo App\Lib\Sessao::retornaValorFormulario('telefone'); ?>" required>
+                </div>
+                
+                <hr>
+
+                <h4>Dados da Conta de Acesso</h4>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" class="form-control" name="email" placeholder="será seu usuário de login" value="<?php echo App\Lib\Sessao::retornaValorFormulario('email'); ?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" class="form-control" name="senha" placeholder="Mínimo de 6 caracteres" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmar_senha">Confirmar Senha</label>
+                    <input type="password" class="form-control" name="confirmar_senha" placeholder="Repita a senha" required>
                 </div>
 
-                <button type="submit" class="btn btn-success btn-sm">Salvar</button>
-                <a href="http://<?php echo APP_HOST; ?>/cliente/listar" class="btn btn-info">Listar cliente</a>
+                <button type="submit" class="btn btn-success">Finalizar Cadastro</button>
+                <a href="http://<?php echo APP_HOST; ?>/login" class="btn btn-default">Cancelar</a>
             </form>
         </div>
-        <div class=" col-md-3"></div>
+        <div class="col-md-3"></div>
     </div>
 </div>
+
+<?php
+    // O footer.php é incluído pelo render() DEPOIS desta view.
+?>

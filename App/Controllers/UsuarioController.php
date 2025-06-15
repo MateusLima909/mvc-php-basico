@@ -61,6 +61,17 @@ class UsuarioController extends Controller
     
     public function listar()
     {
+
+        if (!isset($_SESSION['usuario_id'])) {
+            Sessao::gravaMensagem("Você precisa estar logado.");
+            $this->redirect('/login');
+        }
+
+        if ($_SESSION['usuario_nivel'] !== 'admin') {
+             Sessao::gravaMensagem("Você não tem permissão para acessar esta página.");
+             $this->redirect('/home');
+        }
+
         $usuarioDAO = new UsuarioDAO();
         $usuarios = $usuarioDAO -> listar();
 

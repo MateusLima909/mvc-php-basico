@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models\Entidades;
+
 class Cliente
 {
     private $id;
@@ -7,36 +9,65 @@ class Cliente
     private $dtnasc;
     private $cpf;
     private $telefone;
+    private $id_usuario; 
 
-
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
-    public function setId($id){
+
+    public function setId($id)
+    {
         $this->id = $id;
     }
-    public function getNome(){
+
+    public function getNome()
+    {
         return $this->nome;
     }
-    public function setNome($nome){
+
+    public function setNome($nome)
+    {
         $this->nome = $nome;
     }
-    public function getDtnasc(){
+
+    public function getDtnasc()
+    {
         return $this->dtnasc;
     }
-    public function setDtnasc($dtnasc){
+
+    public function setDtnasc($dtnasc)
+    {
         $this->dtnasc = $dtnasc;
     }
-    public function getCpf(){
+
+    public function getCpf()
+    {
         return $this->cpf;
     }
-    public function setCpf($cpf){
+
+    public function setCpf($cpf)
+    {
         $this->cpf = $cpf;
     }
-    public function getTelefone(){
+
+    public function getTelefone()
+    {
         return $this->telefone;
     }
-    public function setTelefone($telefone){
+
+    public function setTelefone($telefone)
+    {
         $this->telefone = $telefone;
+    }
+
+    public function getIdUsuario()
+    {
+        return $this->id_usuario;
+    }
+
+    public function setIdUsuario($idUsuario)
+    {
+        $this->id_usuario = $idUsuario;
     }
 }
