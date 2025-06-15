@@ -36,7 +36,6 @@ class ClienteController extends Controller
 
         $erros = [];
 
-        // Validação dos Campos
         if (empty($dadosPost['nome'])) $erros[] = "O campo Nome é obrigatório.";
         if (empty($dadosPost['cpf'])) $erros[] = "O campo CPF é obrigatório.";
         if (empty($dadosPost['email'])) $erros[] = "O campo Email é obrigatório.";
@@ -137,9 +136,9 @@ class ClienteController extends Controller
             $cliente = $clienteDAO->buscarPorIdUsuario($_SESSION['usuario_id']);
 
             if ($cliente) {
-                Sessao::limpaFormulario(); // Limpa dados de formulários antigos
+                Sessao::limpaFormulario(); 
                 $this->setViewParam('cliente', $cliente);
-                $this->render('cliente/editarPerfil'); // Renderiza a nova view de edição
+                $this->render('cliente/editarPerfil'); 
             } else {
                 Sessao::gravaMensagem("Não foi possível encontrar seu perfil para edição.");
                 $this->redirect('/cliente/perfil');
@@ -151,9 +150,6 @@ class ClienteController extends Controller
         }
     }
 
-    /**
-     * Processa a atualização do perfil do próprio cliente.
-     */
     public function atualizarPerfil()
     {
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_nivel'] !== 'cliente') {
@@ -163,8 +159,6 @@ class ClienteController extends Controller
         }
 
         $clienteDAO = new ClienteDAO();
-        // Busca o cliente existente para garantir que estamos a editar o correto
-        // e para manter dados que não podem ser alterados (como id_usuario e cpf)
         $clienteAtual = $clienteDAO->buscarPorIdUsuario($_SESSION['usuario_id']);
 
         if (!$clienteAtual) {
@@ -173,14 +167,12 @@ class ClienteController extends Controller
             return;
         }
 
-        // Validação dos dados recebidos
         if (empty($_POST['nome']) || empty($_POST['telefone'])) {
             Sessao::gravaMensagem("Nome e telefone são campos obrigatórios.");
             $this->redirect('/cliente/editarPerfil');
             return;
         }
 
-        // Atualiza o objeto com os novos dados
         $clienteAtual->setNome($_POST['nome']);
         $clienteAtual->setDtnasc($_POST['dtnasc']);
         $clienteAtual->setTelefone($_POST['telefone']);
@@ -189,8 +181,6 @@ class ClienteController extends Controller
             if ($clienteDAO->atualizar($clienteAtual)) {
                 Sessao::gravaMensagem("Perfil atualizado com sucesso!");
             } else {
-                // Embora o rowCount possa ser 0 se nenhum dado mudou,
-                // tratamos como um aviso para o utilizador.
                 Sessao::gravaMensagem("Nenhuma alteração foi detetada ou ocorreu um erro.");
             }
         } catch (\Exception $e) {

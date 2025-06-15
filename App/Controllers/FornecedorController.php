@@ -90,7 +90,7 @@ class FornecedorController extends Controller
         }
     }
 
-    public function meuPainel()
+    public function painel()
     {
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_nivel'] !== 'fornecedor') {
             Sessao::gravaMensagem("Acesso negado.");
@@ -130,14 +130,14 @@ class FornecedorController extends Controller
             if ($fornecedor) {
                 Sessao::limpaFormulario();
                 $this->setViewParam('fornecedor', $fornecedor);
-                $this->render('fornecedor/editar_painel');
+                $this->render('fornecedor/editarPainel');
             } else {
                 Sessao::gravaMensagem("Não foi possível encontrar seu perfil para edição.");
-                $this->redirect('/fornecedor/meuPainel');
+                $this->redirect('/fornecedor/painel');
             }
         } catch (\Exception $e) {
             Sessao::gravaMensagem("Ocorreu um erro ao carregar a página de edição.");
-            $this->redirect('/fornecedor/meuPainel');
+            $this->redirect('/fornecedor/painel');
         }
     }
 
@@ -172,7 +172,7 @@ class FornecedorController extends Controller
             Sessao::gravaMensagem("Ocorreu um erro ao salvar as alterações.");
         }
 
-        $this->redirect('/fornecedor/meuPainel');
+        $this->redirect('/fornecedor/painel');
     }
 
     public function listar()
