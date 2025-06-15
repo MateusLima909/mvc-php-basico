@@ -17,11 +17,20 @@
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
-                    <h3>Cadastro de Fornecedor</h3>
-                    <?php if($Sessao::retornaMensagem()){?>
-                <div class="alert alert-warning" role= 
-                    "alert"> <?php echo $Sessao::retornaMensagem(); ?></div>
-                <?php } ?>
+                <h3>Novo Cadastro de Fornecedor</h3>
+            <p>Preencha os dados da sua empresa e crie sua conta de acesso.</p>
+            <hr>
+
+            <?php
+                if (App\Lib\Sessao::existeMensagem()) {
+                    echo '<div class="alert alert-warning" role="alert">' . App\Lib\Sessao::retornaMensagem() . '</div>';
+                    App\Lib\Sessao::limpaMensagem();
+                }
+            ?>
+
+            <form action="http://<?php echo APP_HOST; ?>/fornecedor/salvar" method="post" id="form_cadastro">
+                
+                <h4>Dados da Empresa</h4>
                 <form action="http://<?php echo APP_HOST; ?>/fornecedor/salvar" method="post" id="form_cadastro">
                 <div class="form-group">
                 <label for="nome">NOME</label>
@@ -58,8 +67,24 @@
                <input type="text" class="form-control" name="telefone" 
                 placeholder="Digite seu telefone" value="<?php echo $Sessao::retornaValorFormulario('telefone');?>" required>
                 </div>
-                <button type="submit" class="btn btn-success btn-sm">Salvar</button> 
-                <a href="http://<?php echo APP_HOST; ?>/fornecedor/listar" class="btn btn-info">Listar Fornecedor</a>
+                <hr>
+
+                <h4>Dados da Conta de Acesso</h4>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" class="form-control" name="email" placeholder="será seu usuário de login" value="<?php echo App\Lib\Sessao::retornaValorFormulario('email'); ?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" class="form-control" name="senha" placeholder="Mínimo de 6 caracteres" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmar_senha">Confirmar Senha</label>
+                    <input type="password" class="form-control" name="confirmar_senha" placeholder="Repita a senha" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">Finalizar Cadastro</button>
+                <a href="http://<?php echo APP_HOST; ?>/login" class="btn btn-default">Cancelar</a>
             </div>
             </form>
         </div>

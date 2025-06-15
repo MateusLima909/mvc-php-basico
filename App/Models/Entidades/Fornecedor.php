@@ -11,6 +11,7 @@ class Fornecedor {
     private $endereco;
     private $tipoDeServico;
     private $telefone;
+    private $id_usuario; 
 
     public function getId(){
         return $this->id;
@@ -59,5 +60,15 @@ class Fornecedor {
     }
     public function setTelefone($telefone){
         $this->telefone = $telefone;
+    }
+
+    public function getIdUsuario()
+    {
+        return $this->id_usuario;
+    }
+
+    public function setIdUsuario($idUsuario)
+    {
+        $this->id_usuario = $idUsuario;
     }
 }

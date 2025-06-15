@@ -42,8 +42,8 @@ if (session_status() == PHP_SESSION_NONE) {
                     <?php endif; ?>
 
                      <?php if ($_SESSION['usuario_nivel'] === 'fornecedor'): // Links específicos para Fornecedor ?>
-                        <li <?php if(($this->app->getAction() ?? '') === 'meuPainel') { ?> class="active" <?php } ?>>
-                            <a href="http://<?php echo APP_HOST; ?>/fornecedor/meuPainel">Meu Painel</a>
+                        <li <?php if(($this->app->getAction() ?? '') === 'painel') { ?> class="active" <?php } ?>>
+                            <a href="http://<?php echo APP_HOST; ?>/fornecedor/painel">Meu Painel</a>
                         </li>
                     <?php endif; ?>
 

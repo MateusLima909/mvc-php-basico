@@ -2,57 +2,46 @@
 
 namespace App\Models\DAO;
 
-use App\Models\Entidades\Fornecedor; // Certifique-se que o caminho e nome da entidade estão corretos
+use App\Models\Entidades\Fornecedor;
 
 class FornecedorDAO extends BaseDAO
 {
     /**
-     * Verifica se um CNPJ já existe no banco de dados.
+     * Verifica se um CNPJ já existe na base de dados.
      * @param string $cnpj O CNPJ a ser verificado.
      * @return bool Retorna true se o CNPJ existir, false caso contrário.
-     * @throws \Exception Se ocorrer um erro durante a verificação.
      */
     public function verificaCnpj($cnpj)
     {
         try {
-            // Seleciona 1 para eficiência, só precisamos saber se existe ou não
             $sql = "SELECT 1 FROM fornecedor WHERE cnpj = :cnpj LIMIT 1";
-            
-            // Supondo que $this->select() do BaseDAO foi corrigido para usar prepare/execute com params
-            // e retorna um PDOStatement
             $stmt = $this->select($sql, [':cnpj' => $cnpj]);
-            
-            // fetchColumn() retorna o valor da primeira coluna da próxima linha ou false se não houver mais linhas.
             return (bool) $stmt->fetchColumn(); 
         } catch (\Exception $e) {
             error_log("Erro em FornecedorDAO->verificaCnpj: " . $e->getMessage());
-            throw new \Exception("Erro ao verificar CNPJ no banco de dados.", 500, $e);
+            throw new \Exception("Erro ao verificar CNPJ na base de dados.", 500, $e);
         }
     }
 
     /**
-     * Salva um novo fornecedor no banco de dados.
-     * @param Fornecedor $fornecedor O objeto Fornecedor a ser salvo.
-     * @return int O número de linhas afetadas.
-     * @throws \Exception Se ocorrer um erro durante a gravação.
+     * Guarda um novo fornecedor na base de dados.
+     * @param Fornecedor $fornecedor O objeto Fornecedor a ser guardado.
+     * @return int|false O ID do novo fornecedor ou false em caso de falha.
      */
     public function salvar(Fornecedor $fornecedor)
     {
         try {
-            // Supondo que $this->insert() do BaseDAO foi corrigido e espera um array associativo ['coluna' => 'valor']
             return $this->insert(
-                'fornecedor', // Nome da tabela
+                'fornecedor',
                 [
-                    // As chaves são os nomes das colunas REAIS no banco
-                    'nome' => $fornecedor->getNome(),
-                    'nomeFantasia' => $fornecedor->getNomeFantasia(),
-                    'cnpj' => $fornecedor->getCnpj(),
+                    'nome'              => $fornecedor->getNome(),
+                    'nomeFantasia'      => $fornecedor->getNomeFantasia(),
+                    'cnpj'              => $fornecedor->getCnpj(),
                     'inscricaoEstadual' => $fornecedor->getInscricaoEstadual(),
-                    'endereco' => $fornecedor->getEndereco(),
-                    'tipoDeServico' => $fornecedor->getTipoDeServico(),
-                    'telefone' => $fornecedor->getTelefone()
-                    // Se você adicionou a coluna id_usuario na tabela fornecedor e quer gerenciá-la aqui:
-                    // 'id_usuario' => $fornecedor->getIdUsuario() // Certifique-se que getIdUsuario() existe e retorna o valor correto
+                    'endereco'          => $fornecedor->getEndereco(),
+                    'tipoDeServico'     => $fornecedor->getTipoDeServico(),
+                    'telefone'          => $fornecedor->getTelefone(),
+                    'id_usuario'        => $fornecedor->getIdUsuario() // CAMPO ADICIONADO
                 ]
             );
         } catch (\Exception $e) {
@@ -62,10 +51,9 @@ class FornecedorDAO extends BaseDAO
     }
 
     /**
-     * Atualiza os dados de um fornecedor existente no banco de dados.
+     * Atualiza os dados de um fornecedor existente na base de dados.
      * @param Fornecedor $fornecedor O objeto Fornecedor com os dados atualizados.
      * @return int O número de linhas afetadas.
-     * @throws \Exception Se ocorrer um erro durante a atualização.
      */
     public function atualizar(Fornecedor $fornecedor)
     {
@@ -77,9 +65,8 @@ class FornecedorDAO extends BaseDAO
                         inscricaoEstadual = :inscricaoEstadual, 
                         endereco = :endereco, 
                         tipoDeServico = :tipoDeServico, 
-                        telefone = :telefone
-                        /* Se for atualizar id_usuario: */
-                        /* , id_usuario = :id_usuario */
+                        telefone = :telefone,
+                        id_usuario = :id_usuario
                     WHERE id = :id";
             
             $stmt = $this->conexao->prepare($sql);
@@ -92,15 +79,9 @@ class FornecedorDAO extends BaseDAO
             $stmt->bindValue(':endereco', $fornecedor->getEndereco());
             $stmt->bindValue(':tipoDeServico', $fornecedor->getTipoDeServico());
             $stmt->bindValue(':telefone', $fornecedor->getTelefone());
-            // Se for atualizar id_usuario:
-            // if ($fornecedor->getIdUsuario() !== null) {
-            //     $stmt->bindValue(':id_usuario', $fornecedor->getIdUsuario(), \PDO::PARAM_INT);
-            // } else {
-            //     $stmt->bindValue(':id_usuario', null, \PDO::PARAM_NULL);
-            // }
+            $stmt->bindValue(':id_usuario', $fornecedor->getIdUsuario(), \PDO::PARAM_INT);
 
             $stmt->execute();
-
             return $stmt->rowCount();
         } catch (\PDOException $e) {
             error_log("Erro em FornecedorDAO->atualizar: " . $e->getMessage());
@@ -109,45 +90,36 @@ class FornecedorDAO extends BaseDAO
     }
 
     /**
-     * Exclui um fornecedor do banco de dados pelo ID.
+     * Exclui um fornecedor da base de dados pelo ID.
      * @param int $id O ID do fornecedor a ser excluído.
      * @return int O número de linhas afetadas.
-     * @throws \Exception Se ocorrer um erro durante a exclusão.
      */
     public function excluir($id)
     {
         try {
             $idParaExcluir = is_array($id) ? ($id[0] ?? null) : $id;
-
             if ($idParaExcluir === null) {
-                throw new \InvalidArgumentException("ID para exclusão do fornecedor não pode ser nulo.");
+                throw new \InvalidArgumentException("ID para exclusão não pode ser nulo.");
             }
-
             $sql = "DELETE FROM fornecedor WHERE id = :id";
             $stmt = $this->conexao->prepare($sql);
             $stmt->bindValue(':id', $idParaExcluir, \PDO::PARAM_INT); 
             $stmt->execute();
-
             return $stmt->rowCount();
-        } catch (\PDOException $e) {
+        } catch (\PDOException | \InvalidArgumentException $e) {
             error_log("Erro em FornecedorDAO->excluir: " . $e->getMessage());
             throw new \Exception("Erro ao excluir o fornecedor.", 500, $e);
-        } catch (\InvalidArgumentException $e) {
-             error_log("Erro em FornecedorDAO->excluir: " . $e->getMessage());
-            throw $e; 
         }
     }
 
     /**
-     * Lista todos os fornecedores cadastrados.
+     * Lista todos os fornecedores registados.
      * @return array Uma lista de objetos Fornecedor.
-     * @throws \Exception Se ocorrer um erro durante a listagem.
      */
     public function listar()
     {
         try {
             $sql = "SELECT * FROM fornecedor ORDER BY nome ASC";
-            // Supondo que $this->select() do BaseDAO foi corrigido e retorna PDOStatement
             $stmt = $this->select($sql); 
             return $stmt->fetchAll(\PDO::FETCH_CLASS, \App\Models\Entidades\Fornecedor::class);
         } catch (\Exception $e) {
@@ -157,34 +129,44 @@ class FornecedorDAO extends BaseDAO
     }
 
     /**
-     * Busca um fornecedor pelo ID.
-     * @param int $id O ID do fornecedor a ser buscado.
-     * @return Fornecedor|false Um objeto Fornecedor se encontrado, false caso contrário.
-     * @throws \Exception Se ocorrer um erro durante a busca.
+     * Busca um fornecedor pelo seu ID.
+     * @param int $id O ID do fornecedor.
+     * @return Fornecedor|false
      */
     public function buscar($id)
     {
         try {
             $idParaBuscar = is_array($id) ? ($id[0] ?? null) : $id;
-
             if ($idParaBuscar === null) {
-                 throw new \InvalidArgumentException("ID para busca do fornecedor não pode ser nulo.");
+                 throw new \InvalidArgumentException("ID para busca não pode ser nulo.");
             }
-
             $sql = "SELECT * FROM fornecedor WHERE id = :id";
-            $stmt = $this->conexao->prepare($sql); // Usando prepare diretamente da conexão
+            $stmt = $this->conexao->prepare($sql); 
             $stmt->bindValue(':id', $idParaBuscar, \PDO::PARAM_INT);
             $stmt->execute();
-
-            // Retorna um objeto da classe Fornecedor ou false se não encontrar
             return $stmt->fetchObject(\App\Models\Entidades\Fornecedor::class); 
-
-        } catch (\PDOException $e) { 
+        } catch (\PDOException | \InvalidArgumentException $e) { 
             error_log("Erro em FornecedorDAO->buscar: " . $e->getMessage());
             throw new \Exception("Erro ao buscar fornecedor por ID.", 500, $e);
-        } catch (\InvalidArgumentException $e) {
-            error_log("Erro em FornecedorDAO->buscar: " . $e->getMessage());
-            throw $e;
+        }
+    }
+    
+    /**
+     * Busca um fornecedor pelo ID do utilizador associado.
+     * @param int $idUsuario O ID do utilizador.
+     * @return Fornecedor|false
+     */
+    public function buscarPorIdUsuario($idUsuario)
+    {
+        try {
+            $sql = "SELECT * FROM fornecedor WHERE id_usuario = :id_usuario";
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->bindValue(':id_usuario', $idUsuario, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchObject(\App\Models\Entidades\Fornecedor::class);
+        } catch (\PDOException $e) {
+            error_log("Erro em FornecedorDAO->buscarPorIdUsuario: " . $e->getMessage());
+            throw new \Exception("Erro ao buscar fornecedor por ID de utilizador.", 500, $e);
         }
     }
 }

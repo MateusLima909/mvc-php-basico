@@ -13,15 +13,11 @@ class ClienteController extends Controller
     public function __construct($app)
     {
         parent::__construct($app);
-        // Garante que a sessão está sempre iniciada quando se utiliza este controller.
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
     }
 
-    /**
-     * Renderiza a página pública de cadastro de um novo cliente.
-     */
     public function cadastro()
     {
         Sessao::limpaFormulario();
@@ -30,9 +26,6 @@ class ClienteController extends Controller
         $this->render('cliente/cadastro');
     }
 
-    /**
-     * Processa os dados do formulário de cadastro, criando um usuário e um cliente.
-     */
     public function salvar()
     {
         $dadosPost = $_POST;
@@ -97,9 +90,6 @@ class ClienteController extends Controller
         }
     }
 
-    /**
-     * Exibe o perfil do cliente logado.
-     */
     public function perfil()
     {
         // Garante que o usuário está logado
@@ -118,12 +108,11 @@ class ClienteController extends Controller
 
         try {
             $clienteDAO = new ClienteDAO();
-            // Busca os dados do cliente usando o id do usuário guardado na sessão
             $cliente = $clienteDAO->buscarPorIdUsuario($_SESSION['usuario_id']);
 
             if ($cliente) {
                 $this->setViewParam('cliente', $cliente);
-                $this->render('cliente/perfil'); // Renderiza a nova view de perfil
+                $this->render('cliente/perfil'); 
             } else {
                 Sessao::gravaMensagem("Não foi possível encontrar os dados do seu perfil de cliente.");
                 $this->redirect('/home');
@@ -135,9 +124,6 @@ class ClienteController extends Controller
         }
     }
 
-    /**
-     * Exibe o formulário para o cliente editar o seu próprio perfil.
-     */
     public function editarPerfil()
     {
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_nivel'] !== 'cliente') {
@@ -215,9 +201,6 @@ class ClienteController extends Controller
         $this->redirect('/cliente/perfil');
     }
 
-    /**
-     * Lista todos os clientes. Acesso restrito a administradores.
-     */
     public function listar()
     {
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_nivel'] !== 'admin') {
@@ -233,9 +216,6 @@ class ClienteController extends Controller
         $this->render('cliente/listar');
     }
 
-    /**
-     * Renderiza o formulário para editar um cliente. Acesso restrito a administradores.
-     */
     public function editar($params)
     {
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_nivel'] !== 'admin') {
@@ -259,9 +239,6 @@ class ClienteController extends Controller
         $this->render('/cliente/editar');
     }
 
-    /**
-     * Processa a atualização de um cliente. Acesso restrito a administradores.
-     */
     public function atualizar()
     {
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_nivel'] !== 'admin') {
@@ -288,9 +265,6 @@ class ClienteController extends Controller
         }
     }
 
-    /**
-     * Exclui um cliente. Acesso restrito a administradores.
-     */
     public function excluir($params)
     {
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_nivel'] !== 'admin') {
