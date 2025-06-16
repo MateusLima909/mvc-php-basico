@@ -41,7 +41,7 @@ class FornecedorDAO extends BaseDAO
                     'endereco'          => $fornecedor->getEndereco(),
                     'tipoDeServico'     => $fornecedor->getTipoDeServico(),
                     'telefone'          => $fornecedor->getTelefone(),
-                    'id_usuario'        => $fornecedor->getIdUsuario() // CAMPO ADICIONADO
+                    'id_usuario'        => $fornecedor->getIdUsuario() 
                 ]
             );
         } catch (\Exception $e) {

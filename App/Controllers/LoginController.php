@@ -23,7 +23,7 @@ class LoginController extends Controller
     public function index()
     {
         if (isset($_SESSION['usuario_id'])) {
-            $this->redirect('/home'); // REDIRECIONAMENTO TEMPORÁRIO PARA TESTE
+            $this->redirect('/home'); 
         }
         $this->render('login/index'); 
     }
@@ -31,7 +31,7 @@ class LoginController extends Controller
     public function autenticar()
     {
         if (isset($_SESSION['usuario_id'])) {
-            $this->redirect('/home'); // REDIRECIONAMENTO TEMPORÁRIO PARA TESTE
+            $this->redirect('/home'); 
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

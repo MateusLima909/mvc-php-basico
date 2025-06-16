@@ -41,7 +41,7 @@ class ClienteDAO extends BaseDAO
                     'dtnasc'     => $cliente->getDtnasc(),
                     'cpf'        => $cliente->getCpf(),
                     'telefone'   => $cliente->getTelefone(),
-                    'id_usuario' => $cliente->getIdUsuario() // CAMPO ADICIONADO
+                    'id_usuario' => $cliente->getIdUsuario() 
                 ]
             );
         } catch (\Exception $e) {

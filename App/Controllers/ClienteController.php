@@ -20,9 +20,6 @@ class ClienteController extends Controller
 
     public function cadastro()
     {
-        Sessao::limpaFormulario();
-        Sessao::limpaMensagem();
-        
         $this->render('cliente/cadastro');
     }
 
@@ -65,7 +62,7 @@ class ClienteController extends Controller
             $idUsuarioNovo = $usuarioDAO->salvar($novoUsuario);
             
             if (!$idUsuarioNovo) {
-                throw new \Exception("Falha ao criar a conta de usuário.");
+                throw new \Exception("Falha ao criar a conta de utilizador.");
             }
 
             $novoCliente = new Cliente();
@@ -76,7 +73,7 @@ class ClienteController extends Controller
             $novoCliente->setIdUsuario($idUsuarioNovo);
 
             $clienteDAO->salvar($novoCliente);
-            
+        
             Sessao::limpaFormulario();
             Sessao::limpaMensagem();
             Sessao::gravaMensagem("Cadastro realizado com sucesso! Faça seu login.");
@@ -91,15 +88,7 @@ class ClienteController extends Controller
 
     public function perfil()
     {
-        // Garante que o usuário está logado
-        if (!isset($_SESSION['usuario_id'])) {
-            Sessao::gravaMensagem("Você precisa estar logado para ver seu perfil.");
-            $this->redirect('/login');
-            return;
-        }
-
-        // Garante que o usuário é um cliente
-        if ($_SESSION['usuario_nivel'] !== 'cliente') {
+        if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_nivel'] !== 'cliente') {
             Sessao::gravaMensagem("Acesso negado.");
             $this->redirect('/home');
             return;
@@ -117,8 +106,7 @@ class ClienteController extends Controller
                 $this->redirect('/home');
             }
         } catch (\Exception $e) {
-            error_log("Erro ao buscar perfil do cliente: " . $e->getMessage());
-            Sessao::gravaMensagem("Ocorreu um erro ao carregar seu perfil. Tente novamente.");
+            Sessao::gravaMensagem("Ocorreu um erro ao carregar o seu perfil.");
             $this->redirect('/home');
         }
     }
@@ -140,11 +128,10 @@ class ClienteController extends Controller
                 $this->setViewParam('cliente', $cliente);
                 $this->render('cliente/editarPerfil'); 
             } else {
-                Sessao::gravaMensagem("Não foi possível encontrar seu perfil para edição.");
+                Sessao::gravaMensagem("Não foi possível encontrar o seu perfil para edição.");
                 $this->redirect('/cliente/perfil');
             }
         } catch (\Exception $e) {
-            error_log("Erro ao carregar formulário de edição de perfil: " . $e->getMessage());
             Sessao::gravaMensagem("Ocorreu um erro ao carregar a página de edição.");
             $this->redirect('/cliente/perfil');
         }
@@ -181,11 +168,10 @@ class ClienteController extends Controller
             if ($clienteDAO->atualizar($clienteAtual)) {
                 Sessao::gravaMensagem("Perfil atualizado com sucesso!");
             } else {
-                Sessao::gravaMensagem("Nenhuma alteração foi detetada ou ocorreu um erro.");
+                Sessao::gravaMensagem("Nenhuma alteração foi detectada.");
             }
         } catch (\Exception $e) {
-            error_log("Erro ao atualizar perfil do cliente: " . $e->getMessage());
-            Sessao::gravaMensagem("Ocorreu um erro ao salvar as alterações.");
+            Sessao::gravaMensagem("Ocorreu um erro ao guardar as alterações.");
         }
 
         $this->redirect('/cliente/perfil');
@@ -194,7 +180,7 @@ class ClienteController extends Controller
     public function listar()
     {
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_nivel'] !== 'admin') {
-            Sessao::gravaMensagem("Acesso negado. Você não tem permissão para acessar esta página.");
+            Sessao::gravaMensagem("Acesso negado. Não tem permissão para aceder a esta página.");
             $this->redirect('/home');
             return;
         }
@@ -237,22 +223,31 @@ class ClienteController extends Controller
             return;
         }
         
-        $cliente = new Cliente();
-        $cliente->setId($_POST['id']);
+        $clienteDAO = new ClienteDAO();
+        $cliente = $clienteDAO->buscar($_POST['id']);
+
+        if (!$cliente) {
+             Sessao::gravaMensagem("Cliente não encontrado para atualização.");
+            $this->redirect('/cliente/listar');
+            return;
+        }
+        
         $cliente->setNome($_POST['nome']);
         $cliente->setDtnasc($_POST['dtnasc']);
         $cliente->setCpf($_POST['cpf']);
         $cliente->setTelefone($_POST['telefone']);
         
-        $clienteDAO = new ClienteDAO();
-
-        if ($clienteDAO->atualizar($cliente)) {
-            Sessao::gravaMensagem("Cliente atualizado com sucesso!");
-            $this->redirect('/cliente/listar');
-        } else {
-            Sessao::gravaMensagem("Erro ao atualizar cliente.");
-            $this->redirect('/cliente/editar/' . $_POST['id']);
+        try {
+            if ($clienteDAO->atualizar($cliente)) {
+                Sessao::gravaMensagem("Cliente atualizado com sucesso!");
+            } else {
+                Sessao::gravaMensagem("Nenhuma alteração foi efetuada.");
+            }
+        } catch (\Exception $e) {
+            Sessao::gravaMensagem("Erro ao atualizar cliente: " . $e->getMessage());
         }
+        
+        $this->redirect('/cliente/listar');
     }
 
     public function excluir($params)
@@ -270,7 +265,7 @@ class ClienteController extends Controller
             if ($clienteDAO->excluir($id)) {
                 Sessao::gravaMensagem("Cliente excluído com sucesso.");
             } else {
-                Sessao::gravaMensagem("Erro ao excluir cliente. Verifique se ele não possui registros associados.");
+                Sessao::gravaMensagem("Erro ao excluir cliente.");
             }
         } catch (\Exception $e) {
              Sessao::gravaMensagem("Erro ao excluir cliente: " . $e->getMessage());

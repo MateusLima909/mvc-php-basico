@@ -1,6 +1,5 @@
 <?php
-    // O header.php e menu.php (com a navbar) já são incluídos 
-    // pelo método render() do seu Controller base ANTES desta view.
+   
 ?>
 
 <div class="container">
@@ -12,7 +11,6 @@
             <hr>
 
             <?php
-                // Lógica de mensagem corrigida: Verifica, mostra e limpa.
                 if (App\Lib\Sessao::existeMensagem()) {
                     echo '<div class="alert alert-warning" role="alert">' . App\Lib\Sessao::retornaMensagem() . '</div>';
                     App\Lib\Sessao::limpaMensagem();
@@ -64,5 +62,5 @@
 </div>
 
 <?php
-    // O footer.php é incluído pelo render() DEPOIS desta view.
+    
 ?>

@@ -13,10 +13,11 @@
             max-width: 400px; 
             margin-left: auto;
             margin-right: auto;
-            margin-top: 50px; /* Você pode ajustar conforme o layout final */
+            margin-top: 50px; 
             margin-bottom: 40px;
-            text-align: center; /* Centraliza o conteúdo do container */
+            text-align: center; 
         }
+        
         .form-group {
             margin-bottom: 15px; 
             text-align: left; /* Alinha labels e inputs à esquerda dentro do form-group */
