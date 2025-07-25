@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <h3>Cadastro de Novo BOSTA</h3>
+            <h3>Cadastro de Novo Cliente</h3>
             <p>Preencha seus dados e crie sua conta de acesso ao sistema.</p>
             <hr>
 
